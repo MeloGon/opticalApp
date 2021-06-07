@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:opticalapp/src/services/database.dart';
 import 'package:opticalapp/src/utilities/utilites.dart';
-import 'package:opticalapp/src/widgets/toast_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);
@@ -80,19 +79,48 @@ class _SearchPageState extends State<SearchPage> {
                       onTap: () {
                         // toast('Tu cliente se ha agregado correctamente :3',
                         //     Colors.grey[200], Colors.green, 16);
+                        // AwesomeDialog(
+                        //   context: context,
+                        //   animType: AnimType.SCALE,
+                        //   dialogType: DialogType.INFO,
+                        //   body: Center(
+                        //     child: Text(
+                        //       'Estas a punto de ver la ficha de este cliente',
+                        //       style: TextStyle(fontStyle: FontStyle.italic),
+                        //     ),
+                        //   ),
+                        //   title: 'Atencion',
+                        //   desc: 'This is also Ignored',
+                        //   btnOkOnPress: () {},
+                        // )..show();
                         AwesomeDialog(
                           context: context,
                           animType: AnimType.SCALE,
-                          dialogType: DialogType.INFO,
+                          dialogType: DialogType.INFO_REVERSED,
                           body: Center(
-                            child: Text(
-                              'Estas a punto de ver la ficha de este cliente',
-                              style: TextStyle(fontStyle: FontStyle.italic),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Que accion quieres realizar?',
+                                  style: TextStyle(fontFamily: 'Regular'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Editar info Cliente'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Eliminar cliente'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text('Cancelar'),
+                                ),
+                              ],
                             ),
                           ),
-                          title: 'Atencion',
+                          title: 'This is Ignored',
                           desc: 'This is also Ignored',
-                          btnOkOnPress: () {},
                         )..show();
                       },
                       child: Container(
