@@ -1,6 +1,9 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:opticalapp/src/services/database.dart';
+import 'package:opticalapp/src/utilities/utilites.dart';
+import 'package:opticalapp/src/widgets/toast_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);
@@ -19,7 +22,6 @@ class _SearchPageState extends State<SearchPage> {
   void initState() {
     super.initState();
     databaseService.getClient().then((value) {
-      //print('VATO' + value.toString());
       setState(() {
         clientStream = value;
       });
@@ -58,43 +60,122 @@ class _SearchPageState extends State<SearchPage> {
           SizedBox(
             height: 20,
           ),
-          StreamBuilder(
-            stream: clientStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              }
-              //print('length = ${snapshot.data.docs.length}');
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (BuildContext context, index) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    width: width,
-                    height: height * .15,
-                    child: Card(
-                        elevation: 10,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                  '${snapshot.data.docs[index].data()["nombre_cli"]}'),
-                              Text(
-                                  '${snapshot.data.docs[index].data()["edad_cli"]}'),
-                              Text(
-                                  '${snapshot.data.docs[index].data()["fecha_cli"]}'),
-                            ],
+          Expanded(
+            child: StreamBuilder(
+              stream: clientStream,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                      child: Container(
+                          width: 100,
+                          height: 100,
+                          child: CircularProgressIndicator()));
+                }
+                //print('length = ${snapshot.data.docs.length}');
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        // toast('Tu cliente se ha agregado correctamente :3',
+                        //     Colors.grey[200], Colors.green, 16);
+                        AwesomeDialog(
+                          context: context,
+                          animType: AnimType.SCALE,
+                          dialogType: DialogType.INFO,
+                          body: Center(
+                            child: Text(
+                              'If the body is specified, then title and description will be ignored, this allows to further customize the dialogue.',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
                           ),
-                        )),
-                  );
-                },
-              );
-            },
+                          title: 'This is Ignored',
+                          desc: 'This is also Ignored',
+                          btnOkOnPress: () {},
+                        )..show();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        margin: EdgeInsets.only(top: 10),
+                        width: width,
+                        height: height * .15,
+                        child: Card(
+                            shadowColor: lightblue,
+                            elevation: 10,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Icon(
+                                        CupertinoIcons.person_crop_square,
+                                        color: primaryColor,
+                                        size: width * .09,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${snapshot.data.docs[index].data()["nombre_cli"]}',
+                                        style: TextStyle(
+                                            fontFamily: 'SemiBold',
+                                            fontSize: 14,
+                                            color: secondaryColor),
+                                      ),
+                                      Text(
+                                        '${snapshot.data.docs[index].data()["cel_cli"]}',
+                                        style: TextStyle(
+                                            fontFamily: 'Regular',
+                                            fontSize: 13.5,
+                                            color: secondaryColor),
+                                      ),
+                                      Text(
+                                        '${snapshot.data.docs[index].data()["edad_cli"]}',
+                                        style: TextStyle(
+                                            fontFamily: 'Regular',
+                                            fontSize: 13.5,
+                                            color: secondaryColor),
+                                      ),
+                                      Text(
+                                        '${snapshot.data.docs[index].data()["fecha_cli"]}',
+                                        style: TextStyle(
+                                            fontFamily: 'Regular',
+                                            fontSize: 13.5,
+                                            color: secondaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                      child: SizedBox(
+                                    width: 2,
+                                  )),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: primaryColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    height: height * .095,
+                                    width: 3,
+                                  )
+                                ],
+                              ),
+                            )),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),
