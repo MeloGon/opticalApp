@@ -17,28 +17,28 @@ class AddClientPage extends StatefulWidget {
 class _AddClientPageState extends State<AddClientPage> {
   double width;
   double height;
-  String userId,
-      cel_cli,
-      nombre_cli,
-      vende_cli,
-      od_esf_le,
-      od_cil_le,
-      od_eje_le,
-      od_esf_ce,
-      od_cil_ce,
-      od_eje_ce,
-      oi_esf_le,
-      oi_cil_le,
-      oi_eje_le,
-      oi_esf_ce,
-      oi_cil_ce,
-      oi_eje_ce,
-      od_add,
-      oi_add,
-      od_dp,
-      oi_dp,
-      dp_total,
-      obs_cli;
+  String userId;
+  TextEditingController cel_cli = new TextEditingController();
+  TextEditingController nombre_cli = new TextEditingController();
+  TextEditingController vende_cli = new TextEditingController();
+  TextEditingController od_esf_le = new TextEditingController();
+  TextEditingController od_cil_le = new TextEditingController();
+  TextEditingController od_eje_le = new TextEditingController();
+  TextEditingController od_esf_ce = new TextEditingController();
+  TextEditingController od_cil_ce = new TextEditingController();
+  TextEditingController od_eje_ce = new TextEditingController();
+  TextEditingController oi_esf_le = new TextEditingController();
+  TextEditingController oi_cil_le = new TextEditingController();
+  TextEditingController oi_eje_le = new TextEditingController();
+  TextEditingController oi_esf_ce = new TextEditingController();
+  TextEditingController oi_cil_ce = new TextEditingController();
+  TextEditingController oi_eje_ce = new TextEditingController();
+  TextEditingController od_add = new TextEditingController();
+  TextEditingController oi_add = new TextEditingController();
+  TextEditingController od_dp = new TextEditingController();
+  TextEditingController oi_dp = new TextEditingController();
+  TextEditingController dp_total = new TextEditingController();
+  TextEditingController obs_cli = new TextEditingController();
   DatabaseService databaseService = new DatabaseService();
   bool _isLoading = false;
   String valueChooseGenre;
@@ -54,6 +54,33 @@ class _AddClientPageState extends State<AddClientPage> {
   TextStyle styleGeneral =
       TextStyle(color: Colors.black, fontSize: 13, fontFamily: 'Regular');
 
+  /* @override
+  void dispose() {
+    cel_cli.dispose();
+    nombre_cli.dispose();
+    vende_cli.dispose();
+    od_esf_le.dispose();
+    od_cil_le.dispose();
+    od_eje_le.dispose();
+    od_esf_ce.dispose();
+    od_cil_ce.dispose();
+    od_eje_ce.dispose();
+    oi_esf_le.dispose();
+    oi_cil_le.dispose();
+    oi_eje_le.dispose();
+    oi_esf_ce.dispose();
+    oi_cil_ce.dispose();
+    oi_eje_ce.dispose();
+    od_add.dispose();
+    oi_add.dispose();
+    od_dp.dispose();
+    oi_dp.dispose();
+    dp_total.dispose();
+    obs_cli.dispose();
+    cel_cli.dispose();
+    super.dispose();
+  }*/
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
@@ -66,7 +93,31 @@ class _AddClientPageState extends State<AddClientPage> {
       });
   }
 
-  clearSpaces() {}
+  clearSpaces() {
+    toast('Limpiando campos ...', Colors.grey[200], Colors.green, 16);
+    cel_cli.clear();
+    nombre_cli.clear();
+    vende_cli.clear();
+    od_esf_le.clear();
+    od_cil_le.clear();
+    od_eje_le.clear();
+    od_esf_ce.clear();
+    od_cil_ce.clear();
+    od_eje_ce.clear();
+    oi_esf_le.clear();
+    oi_cil_le.clear();
+    oi_eje_le.clear();
+    oi_esf_ce.clear();
+    oi_cil_ce.clear();
+    oi_eje_ce.clear();
+    od_add.clear();
+    oi_add.clear();
+    od_dp.clear();
+    oi_dp.clear();
+    dp_total.clear();
+    obs_cli.clear();
+    cel_cli.clear();
+  }
 
   addClient() async {
     setState(() {
@@ -76,35 +127,35 @@ class _AddClientPageState extends State<AddClientPage> {
     Map<String, String> userMap = {
       "userId": userId,
       "fecha_cli": DateFormat('yyyy-MM-dd').format(selectedDate).toString(),
-      "cel_cli": cel_cli,
+      "cel_cli": cel_cli.value.toString(),
       "edad_cli": valueChooseOld,
       "genero_cli": valueChooseGenre,
-      "nombre_cli": nombre_cli,
-      "vende_cli": vende_cli,
-      "od_esf_le": od_esf_le,
-      "od_cil_le": od_cil_le,
-      "od_eje_le": od_eje_le,
-      "od_esf_ce": od_esf_ce,
-      "od_cil_ce": od_cil_ce,
-      "od_eje_ce": od_eje_ce,
-      "oi_esf_le": oi_esf_le,
-      "oi_cil_le": oi_cil_le,
-      "oi_eje_le": oi_eje_le,
-      "oi_esf_ce": oi_esf_ce,
-      "oi_cil_ce": oi_cil_ce,
-      "oi_eje_ce": oi_eje_ce,
-      "od_add": od_add,
-      "oi_add": oi_add,
-      "od_dp": od_dp,
-      "oi_dp": oi_dp,
-      "dp_total": dp_total,
-      "obs_cli": obs_cli,
+      "nombre_cli": nombre_cli.value.toString(),
+      "vende_cli": vende_cli.value.toString(),
+      "od_esf_le": od_esf_le.value.toString(),
+      "od_cil_le": od_cil_le.value.toString(),
+      "od_eje_le": od_eje_le.value.toString(),
+      "od_esf_ce": od_esf_ce.value.toString(),
+      "od_cil_ce": od_cil_ce.value.toString(),
+      "od_eje_ce": od_eje_ce.value.toString(),
+      "oi_esf_le": oi_esf_le.value.toString(),
+      "oi_cil_le": oi_cil_le.value.toString(),
+      "oi_eje_le": oi_eje_le.value.toString(),
+      "oi_esf_ce": oi_esf_ce.value.toString(),
+      "oi_cil_ce": oi_cil_ce.value.toString(),
+      "oi_eje_ce": oi_eje_ce.value.toString(),
+      "od_add": od_add.value.toString(),
+      "oi_add": oi_add.value.toString(),
+      "od_dp": od_dp.value.toString(),
+      "oi_dp": oi_dp.value.toString(),
+      "dp_total": dp_total.value.toString(),
+      "obs_cli": obs_cli.value.toString(),
     };
     await databaseService.createClient(userMap, userId).then((value) {
       setState(() {
         _isLoading = false;
-        toast('Tu cliente se ha agregado correctamente :3', Colors.transparent,
-            Colors.green, 27);
+        toast('Tu cliente se ha agregado correctamente :3', Colors.grey[200],
+            Colors.green, 16);
       });
     });
   }
@@ -241,7 +292,8 @@ class _AddClientPageState extends State<AddClientPage> {
               Container(
                 child: TextField(
                   style: styleGeneral,
-                  onChanged: (value) => nombre_cli = value,
+                  textCapitalization: TextCapitalization.words,
+                  controller: nombre_cli,
                   decoration: InputDecoration(
                     prefixIcon: Icon(CupertinoIcons.person_crop_square),
                     labelText: 'Nombre Completo del Cliente',
@@ -256,7 +308,8 @@ class _AddClientPageState extends State<AddClientPage> {
               Container(
                 child: TextField(
                   style: styleGeneral,
-                  onChanged: (value) => cel_cli = value,
+                  textCapitalization: TextCapitalization.words,
+                  controller: cel_cli,
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     prefixIcon: Icon(CupertinoIcons.phone),
@@ -272,7 +325,8 @@ class _AddClientPageState extends State<AddClientPage> {
               Container(
                 child: TextField(
                   style: styleGeneral,
-                  onChanged: (value) => vende_cli = value,
+                  textCapitalization: TextCapitalization.words,
+                  controller: vende_cli,
                   decoration: InputDecoration(
                     prefixIcon: Icon(CupertinoIcons.person_3),
                     labelText: 'Vendedor',
@@ -316,7 +370,22 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_esf_le = value,
+                          controller: od_esf_le,
+                          keyboardType: TextInputType.phone,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(2),
+                        height: 30,
+                        width: width * 0.2,
+                        child: TextField(
+                          controller: od_cil_le,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -330,22 +399,9 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_cil_le = value,
+                          controller: od_eje_le,
                           keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(2),
-                        height: 30,
-                        width: width * 0.2,
-                        child: TextField(
-                          onChanged: (value) => od_eje_le = value,
-                          keyboardType: TextInputType.phone,
+                          textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius:
@@ -368,7 +424,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_esf_ce = value,
+                          controller: od_esf_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -382,7 +438,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_cil_ce = value,
+                          controller: od_cil_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -396,7 +452,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_eje_ce = value,
+                          controller: od_eje_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -417,7 +473,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_add = value,
+                          controller: od_add,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -465,7 +521,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_esf_le = value,
+                          controller: oi_esf_le,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -479,7 +535,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_cil_le = value,
+                          controller: oi_cil_le,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -493,7 +549,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_eje_le = value,
+                          controller: oi_eje_le,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -517,7 +573,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_esf_ce = value,
+                          controller: oi_esf_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -531,7 +587,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_cil_ce = value,
+                          controller: oi_cil_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -545,7 +601,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_eje_ce = value,
+                          controller: oi_eje_ce,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -566,7 +622,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_add = value,
+                          controller: oi_add,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -611,7 +667,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => od_dp = value,
+                          controller: od_dp,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -625,7 +681,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => oi_dp = value,
+                          controller: oi_dp,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -639,7 +695,7 @@ class _AddClientPageState extends State<AddClientPage> {
                         height: 30,
                         width: width * 0.2,
                         child: TextField(
-                          onChanged: (value) => dp_total = value,
+                          controller: dp_total,
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -663,7 +719,7 @@ class _AddClientPageState extends State<AddClientPage> {
                 ),
               ),
               TextField(
-                onChanged: (value) => obs_cli = value,
+                controller: obs_cli,
                 maxLines: 10,
                 style: styleGeneral,
                 textCapitalization: TextCapitalization.sentences,

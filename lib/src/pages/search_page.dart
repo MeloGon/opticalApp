@@ -86,11 +86,11 @@ class _SearchPageState extends State<SearchPage> {
                           dialogType: DialogType.INFO,
                           body: Center(
                             child: Text(
-                              'If the body is specified, then title and description will be ignored, this allows to further customize the dialogue.',
+                              'Estas a punto de ver la ficha de este cliente',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
                           ),
-                          title: 'This is Ignored',
+                          title: 'Atencion',
                           desc: 'This is also Ignored',
                           btnOkOnPress: () {},
                         )..show();
