@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -94,7 +95,7 @@ class _AddClientPageState extends State<AddClientPage> {
   }
 
   clearSpaces() {
-    toast('Limpiando campos ...', Colors.grey[200], Colors.green, 16);
+    toast('Formulario limpio :3', Colors.grey[200], secondaryColor, 16);
     cel_cli.clear();
     nombre_cli.clear();
     vende_cli.clear();
@@ -127,37 +128,52 @@ class _AddClientPageState extends State<AddClientPage> {
     Map<String, String> userMap = {
       "userId": userId,
       "fecha_cli": DateFormat('yyyy-MM-dd').format(selectedDate).toString(),
-      "cel_cli": cel_cli.value.toString(),
+      "cel_cli": cel_cli.text,
       "edad_cli": valueChooseOld,
       "genero_cli": valueChooseGenre,
-      "nombre_cli": nombre_cli.value.toString(),
-      "vende_cli": vende_cli.value.toString(),
-      "od_esf_le": od_esf_le.value.toString(),
-      "od_cil_le": od_cil_le.value.toString(),
-      "od_eje_le": od_eje_le.value.toString(),
-      "od_esf_ce": od_esf_ce.value.toString(),
-      "od_cil_ce": od_cil_ce.value.toString(),
-      "od_eje_ce": od_eje_ce.value.toString(),
-      "oi_esf_le": oi_esf_le.value.toString(),
-      "oi_cil_le": oi_cil_le.value.toString(),
-      "oi_eje_le": oi_eje_le.value.toString(),
-      "oi_esf_ce": oi_esf_ce.value.toString(),
-      "oi_cil_ce": oi_cil_ce.value.toString(),
-      "oi_eje_ce": oi_eje_ce.value.toString(),
-      "od_add": od_add.value.toString(),
-      "oi_add": oi_add.value.toString(),
-      "od_dp": od_dp.value.toString(),
-      "oi_dp": oi_dp.value.toString(),
-      "dp_total": dp_total.value.toString(),
-      "obs_cli": obs_cli.value.toString(),
+      "nombre_cli": nombre_cli.text,
+      "vende_cli": vende_cli.text,
+      "od_esf_le": od_esf_le.text,
+      "od_cil_le": od_cil_le.text,
+      "od_eje_le": od_eje_le.text,
+      "od_esf_ce": od_esf_ce.text,
+      "od_cil_ce": od_cil_ce.text,
+      "od_eje_ce": od_eje_ce.text,
+      "oi_esf_le": oi_esf_le.text,
+      "oi_cil_le": oi_cil_le.text,
+      "oi_eje_le": oi_eje_le.text,
+      "oi_esf_ce": oi_esf_ce.text,
+      "oi_cil_ce": oi_cil_ce.text,
+      "oi_eje_ce": oi_eje_ce.text,
+      "od_add": od_add.text,
+      "oi_add": oi_add.text,
+      "od_dp": od_dp.text,
+      "oi_dp": oi_dp.text,
+      "dp_total": dp_total.text,
+      "obs_cli": obs_cli.text,
     };
-    await databaseService.createClient(userMap, userId).then((value) {
-      setState(() {
-        _isLoading = false;
-        toast('Tu cliente se ha agregado correctamente :3', Colors.grey[200],
-            Colors.green, 16);
-      });
-    });
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.QUESTION,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'Aviso',
+      desc: 'Estas seguro que quieres anadir este cliente ?',
+      buttonsTextStyle: TextStyle(color: Colors.black),
+      showCloseIcon: true,
+      btnCancelOnPress: () {},
+      btnOkColor: primaryColor,
+      btnOkOnPress: () async {
+        await databaseService.createClient(userMap, userId).then((value) {
+          setState(() {
+            _isLoading = false;
+
+            toast('Tu cliente se ha agregado correctamente :3',
+                Colors.grey[200], secondaryColor, 16);
+          });
+        });
+      },
+    )..show();
   }
 
   @override

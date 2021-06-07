@@ -132,12 +132,20 @@ class _SearchPageState extends State<SearchPage> {
                                             fontSize: 14,
                                             color: secondaryColor),
                                       ),
-                                      Text(
-                                        '${snapshot.data.docs[index].data()["cel_cli"]}',
-                                        style: TextStyle(
-                                            fontFamily: 'Regular',
-                                            fontSize: 13.5,
-                                            color: secondaryColor),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            CupertinoIcons.phone,
+                                            size: 13,
+                                          ),
+                                          Text(
+                                            '${snapshot.data.docs[index].data()["cel_cli"] == null ? '-' : snapshot.data.docs[index].data()["cel_cli"]}',
+                                            style: TextStyle(
+                                                fontFamily: 'Regular',
+                                                fontSize: 13.5,
+                                                color: secondaryColor),
+                                          ),
+                                        ],
                                       ),
                                       Text(
                                         '${snapshot.data.docs[index].data()["edad_cli"]}',
@@ -146,12 +154,20 @@ class _SearchPageState extends State<SearchPage> {
                                             fontSize: 13.5,
                                             color: secondaryColor),
                                       ),
-                                      Text(
-                                        '${snapshot.data.docs[index].data()["fecha_cli"]}',
-                                        style: TextStyle(
-                                            fontFamily: 'Regular',
-                                            fontSize: 13.5,
-                                            color: secondaryColor),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            CupertinoIcons.calendar,
+                                            size: 13,
+                                          ),
+                                          Text(
+                                            '${snapshot.data.docs[index].data()["fecha_cli"]}',
+                                            style: TextStyle(
+                                                fontFamily: 'Regular',
+                                                fontSize: 13.5,
+                                                color: secondaryColor),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
