@@ -15,6 +15,7 @@ class _SearchPageState extends State<SearchPage> {
   double width;
   double height;
   Stream clientStream;
+  TextEditingController searchController = new TextEditingController();
   DatabaseService databaseService = new DatabaseService();
 
   @override
@@ -47,6 +48,7 @@ class _SearchPageState extends State<SearchPage> {
             margin: EdgeInsets.only(top: 10),
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: TextField(
+              controller: searchController,
               style: TextStyle(fontFamily: 'Regular', fontSize: 14),
               decoration: InputDecoration(
                 suffixIcon: Icon(CupertinoIcons.search),
@@ -105,8 +107,10 @@ class _SearchPageState extends State<SearchPage> {
                                   style: TextStyle(fontFamily: 'Regular'),
                                 ),
                                 ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text('Editar info Cliente'),
+                                  onPressed: () {
+                                    showFile();
+                                  },
+                                  child: Text('Ver ficha Cliente'),
                                 ),
                                 ElevatedButton(
                                   onPressed: () {},
@@ -224,5 +228,41 @@ class _SearchPageState extends State<SearchPage> {
         ],
       ),
     );
+  }
+
+  void showFile() {
+    AwesomeDialog(
+      context: context,
+      animType: AnimType.SCALE,
+      body: Container(
+        width: width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: 22),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Tu',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: primaryColor,
+                          fontFamily: 'Medium')),
+                  TextSpan(
+                      text: 'Vision',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: secondaryColor,
+                          fontFamily: 'Regular')),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      title: 'This is Ignored',
+      desc: 'This is also Ignored',
+    )..show();
   }
 }
