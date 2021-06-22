@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:opticalapp/src/pages/filecli_page.dart';
 import 'package:opticalapp/src/services/database.dart';
 import 'package:opticalapp/src/utilities/utilites.dart';
 
@@ -16,6 +17,7 @@ class _SearchPageState extends State<SearchPage> {
   double height;
   Stream clientStream;
   TextEditingController searchController = new TextEditingController();
+  String searchResult = '';
   DatabaseService databaseService = new DatabaseService();
 
   @override
@@ -50,6 +52,11 @@ class _SearchPageState extends State<SearchPage> {
             child: TextField(
               controller: searchController,
               style: TextStyle(fontFamily: 'Regular', fontSize: 14),
+              onChanged: (value) {
+                setState(() {
+                  searchResult = value;
+                });
+              },
               decoration: InputDecoration(
                 suffixIcon: Icon(CupertinoIcons.search),
                 labelText: 'Buscar',
@@ -77,149 +84,154 @@ class _SearchPageState extends State<SearchPage> {
                   shrinkWrap: true,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (BuildContext context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        // toast('Tu cliente se ha agregado correctamente :3',
-                        //     Colors.grey[200], Colors.green, 16);
-                        // AwesomeDialog(
-                        //   context: context,
-                        //   animType: AnimType.SCALE,
-                        //   dialogType: DialogType.INFO,
-                        //   body: Center(
-                        //     child: Text(
-                        //       'Estas a punto de ver la ficha de este cliente',
-                        //       style: TextStyle(fontStyle: FontStyle.italic),
-                        //     ),
-                        //   ),
-                        //   title: 'Atencion',
-                        //   desc: 'This is also Ignored',
-                        //   btnOkOnPress: () {},
-                        // )..show();
-                        AwesomeDialog(
-                          context: context,
-                          animType: AnimType.SCALE,
-                          dialogType: DialogType.INFO_REVERSED,
-                          body: Center(
-                            child: Column(
-                              children: [
-                                Text(
-                                  'Que accion quieres realizar?',
-                                  style: TextStyle(fontFamily: 'Regular'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    showFile();
-                                  },
-                                  child: Text('Ver ficha Cliente'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text('Eliminar cliente'),
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text('Cancelar'),
-                                ),
-                              ],
-                            ),
-                          ),
-                          title: 'This is Ignored',
-                          desc: 'This is also Ignored',
-                        )..show();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        margin: EdgeInsets.only(top: 10),
-                        width: width,
-                        height: height * .15,
-                        child: Card(
-                            shadowColor: lightblue,
-                            elevation: 10,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Row(
+                    if (snapshot.data.docs[index]
+                        .data()["nombre_cli"]
+                        .toLowerCase()
+                        .contains(searchResult)) {
+                      return GestureDetector(
+                        onTap: () {
+                          AwesomeDialog(
+                            context: context,
+                            animType: AnimType.SCALE,
+                            dialogType: DialogType.INFO_REVERSED,
+                            body: Center(
+                              child: Column(
                                 children: [
-                                  Column(
-                                    children: [
-                                      Icon(
-                                        CupertinoIcons.person_crop_square,
-                                        color: primaryColor,
-                                        size: width * .09,
-                                      )
-                                    ],
+                                  Text(
+                                    'Que accion quieres realizar?',
+                                    style: TextStyle(fontFamily: 'Regular'),
                                   ),
-                                  SizedBox(
-                                    width: 20,
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  FileClientPage(snapshot
+                                                      .data.docs[index]
+                                                      .data()["userId"])));
+                                    },
+                                    child: Text('Ver ficha Cliente'),
                                   ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        '${snapshot.data.docs[index].data()["nombre_cli"]}',
-                                        style: TextStyle(
-                                            fontFamily: 'SemiBold',
-                                            fontSize: 14,
-                                            color: secondaryColor),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons.phone,
-                                            size: 13,
-                                          ),
-                                          Text(
-                                            '${snapshot.data.docs[index].data()["cel_cli"] == null ? '-' : snapshot.data.docs[index].data()["cel_cli"]}',
-                                            style: TextStyle(
-                                                fontFamily: 'Regular',
-                                                fontSize: 13.5,
-                                                color: secondaryColor),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        '${snapshot.data.docs[index].data()["edad_cli"]}',
-                                        style: TextStyle(
-                                            fontFamily: 'Regular',
-                                            fontSize: 13.5,
-                                            color: secondaryColor),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            CupertinoIcons.calendar,
-                                            size: 13,
-                                          ),
-                                          Text(
-                                            '${snapshot.data.docs[index].data()["fecha_cli"]}',
-                                            style: TextStyle(
-                                                fontFamily: 'Regular',
-                                                fontSize: 13.5,
-                                                color: secondaryColor),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  ElevatedButton(
+                                    onPressed: () {},
+                                    child: Text('Eliminar cliente'),
                                   ),
-                                  Expanded(
-                                      child: SizedBox(
-                                    width: 2,
-                                  )),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: primaryColor,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    height: height * .095,
-                                    width: 3,
-                                  )
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text('Cancelar'),
+                                  ),
                                 ],
                               ),
-                            )),
-                      ),
-                    );
+                            ),
+                            title: 'This is Ignored',
+                            desc: 'This is also Ignored',
+                          )..show();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          margin: EdgeInsets.only(top: 10),
+                          width: width,
+                          height: height * .15,
+                          child: Card(
+                              shadowColor: lightblue,
+                              elevation: 10,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                child: Row(
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Icon(
+                                          CupertinoIcons.person_crop_square,
+                                          color: primaryColor,
+                                          size: width * .09,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${snapshot.data.docs[index].data()["nombre_cli"]}',
+                                          style: TextStyle(
+                                              fontFamily: 'SemiBold',
+                                              fontSize: 14,
+                                              color: secondaryColor),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              CupertinoIcons.phone,
+                                              size: 13,
+                                            ),
+                                            Text(
+                                              '${snapshot.data.docs[index].data()["cel_cli"] == null ? '-' : snapshot.data.docs[index].data()["cel_cli"]}',
+                                              style: TextStyle(
+                                                  fontFamily: 'Regular',
+                                                  fontSize: 13.5,
+                                                  color: secondaryColor),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          '${snapshot.data.docs[index].data()["edad_cli"]}',
+                                          style: TextStyle(
+                                              fontFamily: 'Regular',
+                                              fontSize: 13.5,
+                                              color: secondaryColor),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              CupertinoIcons.calendar,
+                                              size: 13,
+                                            ),
+                                            Text(
+                                              '${snapshot.data.docs[index].data()["fecha_cli"]}',
+                                              style: TextStyle(
+                                                  fontFamily: 'Regular',
+                                                  fontSize: 13.5,
+                                                  color: secondaryColor),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                        child: SizedBox(
+                                      width: 2,
+                                    )),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      height: height * .095,
+                                      width: 3,
+                                    )
+                                  ],
+                                ),
+                              )),
+                        ),
+                      );
+                    } else {
+                      return Visibility(
+                        visible: false,
+                        child: Text(
+                          'no match',
+                          style: TextStyle(fontSize: 4.0),
+                        ),
+                      );
+                    }
                   },
                 );
               },
@@ -228,41 +240,5 @@ class _SearchPageState extends State<SearchPage> {
         ],
       ),
     );
-  }
-
-  void showFile() {
-    AwesomeDialog(
-      context: context,
-      animType: AnimType.SCALE,
-      body: Container(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RichText(
-              text: TextSpan(
-                style: TextStyle(fontSize: 22),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: 'Tu',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: primaryColor,
-                          fontFamily: 'Medium')),
-                  TextSpan(
-                      text: 'Vision',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: secondaryColor,
-                          fontFamily: 'Regular')),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      title: 'This is Ignored',
-      desc: 'This is also Ignored',
-    )..show();
   }
 }

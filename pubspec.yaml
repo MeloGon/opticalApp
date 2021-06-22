@@ -32,8 +32,8 @@ dependencies:
   random_string: ^2.1.0
   fluttertoast: ^8.0.3
   intl: ^0.17.0
-  cloud_firestore: ^1.0.1
-  firebase_auth: ^1.0.1
+  cloud_firestore: 
+  firebase_auth: 
   awesome_dialog: ^2.1.0
 
 dev_dependencies:

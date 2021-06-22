@@ -44,12 +44,7 @@ class _AddClientPageState extends State<AddClientPage> {
   String valueChooseGenre;
   String valueChooseOld;
   List listGenre = ['Masculino', 'Femenino', 'Homosexual', 'Lesbiana', 'Otros'];
-  List listOld = [
-    '0 - 14 anios',
-    '15 - 24 anios',
-    '25 - 59 anios',
-    '60 a + anios'
-  ];
+  List listOld = ['0 - 14 años', '15 - 24 años', '25 - 59 años', '60 a + años'];
   DateTime selectedDate = DateTime.now();
   TextStyle styleGeneral =
       TextStyle(color: Colors.black, fontSize: 13, fontFamily: 'Regular');
