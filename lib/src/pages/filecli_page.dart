@@ -5,6 +5,7 @@ import 'package:opticalapp/src/utilities/utilites.dart';
 import 'package:opticalapp/src/widgets/appbar_widget.dart';
 import 'package:opticalapp/src/widgets/header_widget.dart';
 import 'package:opticalapp/src/widgets/sizebox_widget.dart';
+import 'package:opticalapp/src/widgets/toast_widget.dart';
 
 class FileClientPage extends StatefulWidget {
   final String userId;
@@ -63,8 +64,15 @@ class _FileClientPageState extends State<FileClientPage>
 
   updateData() {
     setState(() {
-      enabledTextField = true;
-      isEditing = true;
+      isEditing = !isEditing;
+      if (isEditing) {
+        enabledTextField = true;
+        toast('Ahora puedes editar los datos del cliente', Colors.white,
+            Colors.black, 12);
+      } else {
+        enabledTextField = false;
+        toast('Guardado con exito', Colors.white, Colors.black, 12);
+      }
     });
   }
 
@@ -133,521 +141,494 @@ class _FileClientPageState extends State<FileClientPage>
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: appBarWid(context),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        brightness: Brightness.light,
-        automaticallyImplyLeading: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          TextButton(
-            onPressed: () {
-              updateData();
-            },
-            child: isEditing ? Text('GUARDAR') : Text('EDITAR'),
-            style: TextButton.styleFrom(
-              primary: primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+        appBar: AppBar(
+          title: appBarWid(context),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          brightness: Brightness.light,
+          automaticallyImplyLeading: true,
+          iconTheme: IconThemeData(color: Colors.black),
+          actions: [
+            editWidget(),
+          ],
+        ),
+        body: loading == true
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : bodyifDataExists());
+  }
+
+  Widget editWidget() {
+    return TextButton(
+      onPressed: () {
+        updateData();
+      },
+      child: isEditing ? Icon(CupertinoIcons.checkmark_alt) : Text('EDITAR'),
+      style: TextButton.styleFrom(
+        primary: primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+      ),
+    );
+  }
+
+  Widget bodyifDataExists() {
+    return SingleChildScrollView(
+      child: Container(
+        width: double.infinity,
+        child: Column(
+          children: [
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'FECHA DE REGISTRO',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: fecha,
+            ),
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'GÉNERO',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: genero,
+            ),
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'EDAD',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: edad,
+            ),
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'NOMBRE DEL CLIENTE',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: nombre,
+            ),
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'TELEFONO',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: telefono,
+            ),
+            TextField(
+              style: styleGeneral,
+              decoration: new InputDecoration(
+                labelText: 'VENDEDOR',
+                border: inputDeactivate,
+                contentPadding:
+                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+              ),
+              enabled: enabledTextField,
+              controller: vendedor,
+            ),
+            headerWid(
+              width,
+              height * 0.05,
+              'Medida Ojo Derecho',
+              Icon(
+                CupertinoIcons.eye,
+                size: 35,
+                color: secondaryColor,
               ),
             ),
+            sizedBoxSpace(20),
+            medidaOjoDerecho(),
+            sizedBoxSpace(20),
+            headerWid(
+              width,
+              height * 0.05,
+              'Medida Ojo Izquierdo',
+              Icon(
+                CupertinoIcons.eye,
+                size: 35,
+                color: secondaryColor,
+              ),
+            ),
+            sizedBoxSpace(20),
+            medidaOjoIzquierda(),
+            headerWid(
+              width,
+              height * 0.05,
+              'DP Ajustes',
+              Icon(
+                CupertinoIcons.gear_alt,
+                size: 35,
+                color: secondaryColor,
+              ),
+            ),
+            sizedBoxSpace(20),
+            medidaDp(),
+            observaciones(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget medidaOjoDerecho() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('   '),
+              Text(
+                'ESF',
+                style: styleSubHeader,
+              ),
+              Text(
+                'CIL',
+                style: styleSubHeader,
+              ),
+              Text(
+                'EJE',
+                style: styleSubHeader,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Lejos ',
+                style: styleSubHeader,
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odesfle,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odcille,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odejele,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Cerca',
+                style: styleSubHeader,
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odesfce,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odcilce,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odejece,
+                ),
+              ),
+            ],
           )
         ],
       ),
-      body: loading == true
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                child: Column(
-                  children: [
-                    // Text(widget.userId),
-                    // Text(resp.data()["vende_cli"]),
+    );
+  }
 
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'FECHA DE REGISTRO',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: fecha,
-                    ),
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'GÉNERO',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: genero,
-                    ),
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'EDAD',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: edad,
-                    ),
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'NOMBRE DEL CLIENTE',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: nombre,
-                    ),
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'TELEFONO',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: telefono,
-                    ),
-                    TextField(
-                      style: styleGeneral,
-                      decoration: new InputDecoration(
-                        labelText: 'VENDEDOR',
-                        border: inputDeactivate,
-                        contentPadding: EdgeInsets.only(
-                            left: 15, bottom: 11, top: 11, right: 15),
-                      ),
-                      enabled: enabledTextField,
-                      controller: vendedor,
-                    ),
-                    headerWid(
-                      width,
-                      height * 0.05,
-                      'Medida Ojo Derecho',
-                      Icon(
-                        CupertinoIcons.eye,
-                        size: 35,
-                        color: secondaryColor,
-                      ),
-                    ),
-                    sizedBoxSpace(20),
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('   '),
-                              Text(
-                                'ESF',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'CIL',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'EJE',
-                                style: styleSubHeader,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Lejos ',
-                                style: styleSubHeader,
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odesfle,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odcille,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odejele,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Cerca',
-                                style: styleSubHeader,
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odesfce,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odcilce,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odejece,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    sizedBoxSpace(20),
-                    headerWid(
-                      width,
-                      height * 0.05,
-                      'Medida Ojo Izquierdo',
-                      Icon(
-                        CupertinoIcons.eye,
-                        size: 35,
-                        color: secondaryColor,
-                      ),
-                    ),
-                    sizedBoxSpace(20),
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('   '),
-                              Text(
-                                'ESF',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'CIL',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'EJE',
-                                style: styleSubHeader,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Lejos ',
-                                style: styleSubHeader,
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oiesfle,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oicille,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oiejele,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'Cerca',
-                                style: styleSubHeader,
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oiesfce,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oicilce,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: oiejece,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    headerWid(
-                      width,
-                      height * 0.05,
-                      'DP Ajustes',
-                      Icon(
-                        CupertinoIcons.gear_alt,
-                        size: 35,
-                        color: secondaryColor,
-                      ),
-                    ),
-                    sizedBoxSpace(20),
-                    Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text('   '),
-                              Text(
-                                'DER',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'IZQ',
-                                style: styleSubHeader,
-                              ),
-                              Text(
-                                'TOTAL',
-                                style: styleSubHeader,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Text(
-                                'DP ',
-                                style: styleSubHeader,
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odesfle,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odcille,
-                                ),
-                              ),
-                              Container(
-                                width: width * .2,
-                                child: TextField(
-                                  style: styleGeneral,
-                                  decoration: new InputDecoration(
-                                    border: inputDeactivate,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 15,
-                                        bottom: 11,
-                                        top: 11,
-                                        right: 15),
-                                  ),
-                                  enabled: enabledTextField,
-                                  controller: odejele,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
-                      child: TextField(
-                        style: styleGeneral,
-                        enabled: enabledTextField,
-                        controller: obscli,
-                        maxLines: 10,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                            labelText: 'Observaciones',
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ],
+  Widget medidaOjoIzquierda() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('   '),
+              Text(
+                'ESF',
+                style: styleSubHeader,
+              ),
+              Text(
+                'CIL',
+                style: styleSubHeader,
+              ),
+              Text(
+                'EJE',
+                style: styleSubHeader,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Lejos ',
+                style: styleSubHeader,
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oiesfle,
                 ),
               ),
-            ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oicille,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oiejele,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'Cerca',
+                style: styleSubHeader,
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oiesfce,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oicilce,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: oiejece,
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget medidaDp() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text('   '),
+              Text(
+                'DER',
+                style: styleSubHeader,
+              ),
+              Text(
+                'IZQ',
+                style: styleSubHeader,
+              ),
+              Text(
+                'TOTAL',
+                style: styleSubHeader,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                'DP ',
+                style: styleSubHeader,
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odesfle,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odcille,
+                ),
+              ),
+              Container(
+                width: width * .2,
+                child: TextField(
+                  style: styleGeneral,
+                  decoration: new InputDecoration(
+                    border: inputDeactivate,
+                    contentPadding: EdgeInsets.only(
+                        left: 15, bottom: 11, top: 11, right: 15),
+                  ),
+                  enabled: enabledTextField,
+                  controller: odejele,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget observaciones() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: TextField(
+        style: styleGeneral,
+        enabled: enabledTextField,
+        controller: obscli,
+        maxLines: 10,
+        textCapitalization: TextCapitalization.sentences,
+        decoration: InputDecoration(
+            labelText: 'Observaciones', border: OutlineInputBorder()),
+      ),
     );
   }
 }

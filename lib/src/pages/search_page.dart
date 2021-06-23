@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:opticalapp/src/pages/filecli_page.dart';
 import 'package:opticalapp/src/services/database.dart';
 import 'package:opticalapp/src/utilities/utilites.dart';
+import 'package:opticalapp/src/widgets/toast_widget.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key key}) : super(key: key);
@@ -28,6 +29,11 @@ class _SearchPageState extends State<SearchPage> {
         clientStream = value;
       });
     });
+  }
+
+  deleteClient(String userId) async {
+    await databaseService.deleteClient(userId);
+    toast('Cliente Eliminado', Colors.white, Colors.black, 13);
   }
 
   @override
@@ -58,7 +64,22 @@ class _SearchPageState extends State<SearchPage> {
                 });
               },
               decoration: InputDecoration(
-                suffixIcon: Icon(CupertinoIcons.search),
+                suffixIcon: searchController.text == ""
+                    ? Icon(
+                        Icons.search,
+                        color: Color(0xff0854a0),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          searchController.clear();
+                          setState(() {
+                            searchResult = '';
+                          });
+                        },
+                        icon: Icon(
+                          Icons.clear,
+                        ),
+                      ),
                 labelText: 'Buscar',
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -114,7 +135,10 @@ class _SearchPageState extends State<SearchPage> {
                                     child: Text('Ver ficha Cliente'),
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      deleteClient(snapshot.data.docs[index]
+                                          .data()["userId"]);
+                                    },
                                     child: Text('Eliminar cliente'),
                                   ),
                                   ElevatedButton(
@@ -160,12 +184,16 @@ class _SearchPageState extends State<SearchPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '${snapshot.data.docs[index].data()["nombre_cli"]}',
-                                          style: TextStyle(
-                                              fontFamily: 'SemiBold',
-                                              fontSize: 14,
-                                              color: secondaryColor),
+                                        Container(
+                                          width: width * 0.6,
+                                          child: Text(
+                                            '${snapshot.data.docs[index].data()["nombre_cli"]}',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontFamily: 'SemiBold',
+                                                fontSize: 14,
+                                                color: secondaryColor),
+                                          ),
                                         ),
                                         Row(
                                           children: [

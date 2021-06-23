@@ -122,29 +122,29 @@ class _AddClientPageState extends State<AddClientPage> {
     Map<String, String> userMap = {
       "userId": userId,
       "fecha_cli": DateFormat('yyyy-MM-dd').format(selectedDate).toString(),
-      "cel_cli": cel_cli.value.toString(),
+      "cel_cli": cel_cli.text.toString(),
       "edad_cli": valueChooseOld,
       "genero_cli": valueChooseGenre,
-      "nombre_cli": nombre_cli.value.toString(),
-      "vende_cli": vende_cli.value.toString(),
-      "od_esf_le": od_esf_le.value.toString(),
-      "od_cil_le": od_cil_le.value.toString(),
-      "od_eje_le": od_eje_le.value.toString(),
-      "od_esf_ce": od_esf_ce.value.toString(),
-      "od_cil_ce": od_cil_ce.value.toString(),
-      "od_eje_ce": od_eje_ce.value.toString(),
-      "oi_esf_le": oi_esf_le.value.toString(),
-      "oi_cil_le": oi_cil_le.value.toString(),
-      "oi_eje_le": oi_eje_le.value.toString(),
-      "oi_esf_ce": oi_esf_ce.value.toString(),
-      "oi_cil_ce": oi_cil_ce.value.toString(),
-      "oi_eje_ce": oi_eje_ce.value.toString(),
-      "od_add": od_add.value.toString(),
-      "oi_add": oi_add.value.toString(),
-      "od_dp": od_dp.value.toString(),
-      "oi_dp": oi_dp.value.toString(),
-      "dp_total": dp_total.value.toString(),
-      "obs_cli": obs_cli.value.toString(),
+      "nombre_cli": nombre_cli.text.toString(),
+      "vende_cli": vende_cli.text.toString(),
+      "od_esf_le": od_esf_le.text.toString(),
+      "od_cil_le": od_cil_le.text.toString(),
+      "od_eje_le": od_eje_le.text.toString(),
+      "od_esf_ce": od_esf_ce.text.toString(),
+      "od_cil_ce": od_cil_ce.text.toString(),
+      "od_eje_ce": od_eje_ce.text.toString(),
+      "oi_esf_le": oi_esf_le.text.toString(),
+      "oi_cil_le": oi_cil_le.text.toString(),
+      "oi_eje_le": oi_eje_le.text.toString(),
+      "oi_esf_ce": oi_esf_ce.text.toString(),
+      "oi_cil_ce": oi_cil_ce.text.toString(),
+      "oi_eje_ce": oi_eje_ce.text.toString(),
+      "od_add": od_add.text.toString(),
+      "oi_add": oi_add.text.toString(),
+      "od_dp": od_dp.text.toString(),
+      "oi_dp": oi_dp.text.toString(),
+      "dp_total": dp_total.text.toString(),
+      "obs_cli": obs_cli.text.toString(),
     };
     await databaseService.createClient(userMap, userId).then((value) {
       setState(() {
@@ -357,7 +357,7 @@ class _AddClientPageState extends State<AddClientPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Lejos',
+                        'Lejos ',
                         style: styleGeneral,
                       ),
                       Container(
@@ -508,7 +508,7 @@ class _AddClientPageState extends State<AddClientPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Lejos',
+                        'Lejos ',
                         style: styleGeneral,
                       ),
                       Container(

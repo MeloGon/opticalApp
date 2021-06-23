@@ -15,6 +15,13 @@ class DatabaseService {
     return await FirebaseFirestore.instance.collection("Clientes").snapshots();
   }
 
+  deleteClient(String userId) async {
+    return await FirebaseFirestore.instance
+        .collection('Clientes')
+        .doc(userId)
+        .delete();
+  }
+
   getDataUser(String userId) async {
     return await FirebaseFirestore.instance
         .collection('Clientes')
