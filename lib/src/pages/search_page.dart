@@ -138,6 +138,7 @@ class _SearchPageState extends State<SearchPage> {
                                     onPressed: () {
                                       deleteClient(snapshot.data.docs[index]
                                           .data()["userId"]);
+                                      Navigator.pop(context);
                                     },
                                     child: Text('Eliminar cliente'),
                                   ),

@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:opticalapp/src/services/database.dart';
@@ -67,13 +68,31 @@ class _FileClientPageState extends State<FileClientPage>
       isEditing = !isEditing;
       if (isEditing) {
         enabledTextField = true;
+        inputDeactivate = null;
         toast('Ahora puedes editar los datos del cliente', Colors.white,
             Colors.black, 12);
       } else {
+        inputDeactivate = InputBorder.none;
         enabledTextField = false;
         toast('Guardado con exito', Colors.white, Colors.black, 12);
       }
     });
+
+    AwesomeDialog(
+        context: context,
+        dialogType: DialogType.WARNING,
+        headerAnimationLoop: false,
+        animType: AnimType.TOPSLIDE,
+        showCloseIcon: true,
+        closeIcon: Icon(Icons.close_fullscreen_outlined),
+        title: 'Advertencia',
+        desc: 'Estas seguro de que quieres editar los datos del cliente ?',
+        btnCancelOnPress: () {},
+        onDissmissCallback: (type) {
+          debugPrint('Dialog Dissmiss from callback $type');
+        },
+        btnOkOnPress: () {})
+      ..show();
   }
 
   @override
@@ -180,71 +199,77 @@ class _FileClientPageState extends State<FileClientPage>
         width: double.infinity,
         child: Column(
           children: [
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'FECHA DE REGISTRO',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'FECHA DE REGISTRO',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: fecha,
               ),
-              enabled: enabledTextField,
-              controller: fecha,
             ),
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'GÉNERO',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'GÉNERO',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: genero,
               ),
-              enabled: enabledTextField,
-              controller: genero,
             ),
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'EDAD',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'EDAD',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: edad,
               ),
-              enabled: enabledTextField,
-              controller: edad,
             ),
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'NOMBRE DEL CLIENTE',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'NOMBRE DEL CLIENTE',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: nombre,
               ),
-              enabled: enabledTextField,
-              controller: nombre,
             ),
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'TELEFONO',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'TELEFONO',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: telefono,
               ),
-              enabled: enabledTextField,
-              controller: telefono,
             ),
-            TextField(
-              style: styleGeneral,
-              decoration: new InputDecoration(
-                labelText: 'VENDEDOR',
-                border: inputDeactivate,
-                contentPadding:
-                    EdgeInsets.only(left: 15, bottom: 11, top: 11, right: 15),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextField(
+                style: styleGeneral,
+                decoration: new InputDecoration(
+                  labelText: 'VENDEDOR',
+                  border: inputDeactivate,
+                ),
+                enabled: enabledTextField,
+                controller: vendedor,
               ),
-              enabled: enabledTextField,
-              controller: vendedor,
             ),
             headerWid(
               width,
