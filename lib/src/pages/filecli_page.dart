@@ -64,7 +64,55 @@ class _FileClientPageState extends State<FileClientPage>
   }
 
   updateData() {
-    setState(() {
+    if (isEditing) {
+      AwesomeDialog(
+          context: context,
+          dialogType: DialogType.WARNING,
+          headerAnimationLoop: false,
+          animType: AnimType.TOPSLIDE,
+          showCloseIcon: true,
+          closeIcon: Icon(Icons.close_fullscreen_outlined),
+          title: 'Advertencia',
+          desc: 'Deseas terminar con la edición?',
+          btnCancelOnPress: () {},
+          onDissmissCallback: (type) {
+            debugPrint('Dialog Dissmiss from callback $type');
+          },
+          btnOkOnPress: () {
+            setState(() {});
+            isEditing = !isEditing;
+            enabledTextField = true;
+            inputDeactivate = null;
+            toast('Ahora puedes editar los datos del cliente', Colors.white,
+                Colors.black, 12);
+          })
+        ..show();
+    } else {
+      AwesomeDialog(
+          context: context,
+          dialogType: DialogType.WARNING,
+          headerAnimationLoop: false,
+          animType: AnimType.TOPSLIDE,
+          showCloseIcon: true,
+          closeIcon: Icon(Icons.close_fullscreen_outlined),
+          title: 'Advertencia',
+          desc: 'Estas seguro de que quieres editar los datos del cliente ?',
+          btnCancelOnPress: () {},
+          onDissmissCallback: (type) {
+            debugPrint('Dialog Dissmiss from callback $type');
+          },
+          btnOkOnPress: () {
+            setState(() {});
+            isEditing = !isEditing;
+            enabledTextField = true;
+            inputDeactivate = null;
+            toast('Ahora puedes editar los datos del cliente', Colors.white,
+                Colors.black, 12);
+          })
+        ..show();
+    }
+
+    /*setState(() {
       isEditing = !isEditing;
       if (isEditing) {
         enabledTextField = true;
@@ -76,23 +124,7 @@ class _FileClientPageState extends State<FileClientPage>
         enabledTextField = false;
         toast('Guardado con exito', Colors.white, Colors.black, 12);
       }
-    });
-
-    AwesomeDialog(
-        context: context,
-        dialogType: DialogType.WARNING,
-        headerAnimationLoop: false,
-        animType: AnimType.TOPSLIDE,
-        showCloseIcon: true,
-        closeIcon: Icon(Icons.close_fullscreen_outlined),
-        title: 'Advertencia',
-        desc: 'Estas seguro de que quieres editar los datos del cliente ?',
-        btnCancelOnPress: () {},
-        onDissmissCallback: (type) {
-          debugPrint('Dialog Dissmiss from callback $type');
-        },
-        btnOkOnPress: () {})
-      ..show();
+    });*/
   }
 
   @override
